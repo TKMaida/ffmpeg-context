@@ -15,22 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="reg_utils.c">
+    <ClCompile Include="src\ffmpeg-context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ffmpeg-context.c">
+    <ClCompile Include="src\logging.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="logging.c">
+    <ClCompile Include="src\reg_utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="reg_utils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\logging.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="logging.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\reg_utils.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

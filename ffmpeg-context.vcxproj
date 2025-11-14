@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ffmpeg-context.c" />
+    <ClCompile Include="src\logging.c" />
+    <ClCompile Include="src\reg_utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\logging.h" />
+    <ClInclude Include="src\reg_utils.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -104,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>G:\Programmingstuff\ffmpeg-context</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\Programmingstuff\ffmpeg-context\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>G:\Programmingstuff\ffmpeg-context</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\Programmingstuff\ffmpeg-context\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,15 +139,6 @@
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="ffmpeg-context.c" />
-    <ClCompile Include="logging.c" />
-    <ClCompile Include="reg_utils.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="logging.h" />
-    <ClInclude Include="reg_utils.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
