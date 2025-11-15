@@ -1,1 +1,0 @@
-G:\Programmingstuff\ffmpeg-context\x64\Debug\ffmpeg-context.exe
