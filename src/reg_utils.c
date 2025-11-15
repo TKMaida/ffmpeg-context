@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <logging.h>
 #include <tchar.h>
+#include <op_result.h>
+#include <utils.h>
 
 LSTATUS RegKeyExists(HKEY hKeyRoot, LPCTSTR lpSubKey)
 {
@@ -19,7 +21,7 @@ LSTATUS RegKeyExists(HKEY hKeyRoot, LPCTSTR lpSubKey)
 LSTATUS CreateRegKey(HKEY hKeyRoot, LPCTSTR lpSubKey)
 {
 	HKEY hKey;
-	LPDWORD disposition;
+	DWORD disposition;
 
 	LONG lResult = RegCreateKeyEx(
 		hKeyRoot,
@@ -41,43 +43,43 @@ LSTATUS CreateRegKey(HKEY hKeyRoot, LPCTSTR lpSubKey)
 	return lResult;
 }
 
-LSTATUS UpdateRegistry()
-{
-	LPCTSTR lpBaseKey = TEXT(PROGRAM_REG_KEY);
-	LPCTSTR lpCommandKey = _T(PROGRAM_REG_KEY_COMMAND);
-	LSTATUS result = RegKeyExists(HKEY_CLASSES_ROOT, lpBaseKey);
+OpResult UpdateRegistry() {
 
-	if (result == ERROR_FILE_NOT_FOUND)
-	{
-		result = CreateRegKey(HKEY_CLASSES_ROOT, lpBaseKey);
-		if (result != ERROR_SUCCESS)
-		{
-			return result;
-		}
-	}
-	else if (result != ERROR_SUCCESS)
-	{
-		return result; 
-	}
+    LSTATUS lResult = RegKeyExists(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY);
 
-	result = RegKeyExists(HKEY_CLASSES_ROOT, lpCommandKey);
+    if (lResult == ERROR_FILE_NOT_FOUND) {
+        lResult = CreateRegKey(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY);
+        if (lResult != ERROR_SUCCESS) {
+            TCHAR* errMsg = ErrorMessage(lResult);
+            TCHAR* finalMsg = formatString(_T("%s: Failed to create base key."), errMsg);
+            free(errMsg);
+            return (OpResult) { lResult, finalMsg };
+        }
+    }
+    else if (lResult != ERROR_SUCCESS) {
+        TCHAR* errMsg = ErrorMessage(lResult);
+        TCHAR* finalMsg = formatString(_T("Unhandled error checking base key: %s"), errMsg);
+        free(errMsg);
+        return (OpResult) { lResult, finalMsg };
+    }
 
-	if (result == ERROR_FILE_NOT_FOUND)
-	{
-		result = CreateRegKey(HKEY_CLASSES_ROOT, lpCommandKey);
+    lResult = RegKeyExists(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY_COMMAND);
+    if (lResult == ERROR_FILE_NOT_FOUND) {
+        lResult = CreateRegKey(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY_COMMAND);
+        if (lResult != ERROR_SUCCESS) {
+            TCHAR* errMsg = ErrorMessage(lResult);
+            TCHAR* finalMsg = formatString(_T("%s: Failed to create command key."), errMsg);
+            free(errMsg);
+            return (OpResult) { lResult, finalMsg };
+        }
+    }
+    else if (lResult != ERROR_SUCCESS) {
+        TCHAR* errMsg = ErrorMessage(lResult);
+        TCHAR* finalMsg = formatString(_T("%s: Unhandled error checking command key."), errMsg);
+        free(errMsg);
+        return (OpResult) { lResult, finalMsg };
+    }
 
-		if (result != ERROR_SUCCESS)
-		{
-			return result;
-		}
-	}
-	else if (result != ERROR_SUCCESS)
-	{
-		return result;
-	}
-
-	return ERROR_SUCCESS;
+    TCHAR* successMsg = formatString(_T("Registry updated successfully."));
+    return (OpResult) { ERROR_SUCCESS, successMsg };
 }
-
-
-

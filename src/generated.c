@@ -5,7 +5,6 @@
 #include<op_result.h>
 #include <tchar.h>
 
-
 int main(int argc, char** argv)
 {
 
@@ -16,7 +15,7 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		_tprintf(_T("%s"), regUpdated.msg);
+		_tprintf(regUpdated.msg);
 	}
 
 	getchar();

@@ -22,10 +22,13 @@
     <ClCompile Include="src\ffmpeg-context.c" />
     <ClCompile Include="src\logging.c" />
     <ClCompile Include="src\reg_utils.c" />
+    <ClCompile Include="src\utils.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logging.h" />
     <ClInclude Include="src\reg_utils.h" />
+    <ClInclude Include="src\op_result.h" />
+    <ClInclude Include="src\utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
