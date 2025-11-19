@@ -6,17 +6,28 @@
 #include <tchar.h>
 
 
-int main(int argc, char** argv)
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
 
 	OpResult regUpdated = UpdateRegistry();
 	if (!regUpdated.msg) 
 	{ 
-		_tprintf(_T("Error displaying status.")); 
+		int messageBox = MessageBox(
+			NULL,
+			_T("Error displaying status!"),
+			_T("Error!"),
+			MB_OK | MB_ICONERROR
+		);
+
 	}
 	else
 	{
-		_tprintf(_T("%s"), regUpdated.msg);
+		int messageBox = MessageBox(
+			NULL,
+			_T("Successfully updated registry!"),
+			_T("Success!"),
+			MB_OK | MB_ICONINFORMATION
+		);
 	}
 
 	getchar();
