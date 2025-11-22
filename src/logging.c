@@ -37,7 +37,5 @@ void GetSystemMessage(LONG code, TCHAR errMsg[], size_t errMsgSize) {
 		NULL
 		);
 
-	_stprintf_s(errMsg, errMsgSize, _T("Error value: %ld Message: %s\n"),
-		code,
-		len ? buff : _T("Error message not found."));
+	_stprintf_s(errMsg, errMsgSize, _T("%s\n"), len ? buff : _T("Error message not found."));
 }
