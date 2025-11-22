@@ -1,5 +1,6 @@
-#include "logging.h"
 #include <tchar.h>
+
+#include "logging.h"
 
 void PrintErrorMessage(LONG errorCode)
 {
@@ -37,7 +38,6 @@ void GetSystemMessage(LONG code, TCHAR errMsg[], size_t errMsgSize) {
 		NULL
 		);
 
-	_stprintf_s(errMsg, errMsgSize, _T("Error value: %ld Message: %s\n"),
-		code,
+	_stprintf_s(errMsg, errMsgSize, _T("%s\n"),
 		len ? buff : _T("Error message not found."));
 }
