@@ -1,6 +1,5 @@
-#include <logging.h>
+#include "logging.h"
 #include <tchar.h>
-#include <utils.h>
 
 void PrintErrorMessage(LONG errorCode)
 {
@@ -10,46 +9,35 @@ void PrintErrorMessage(LONG errorCode)
 		NULL,
 		errorCode,
 		0,
-		&errorMsg,
+		(LPTSTR) & errorMsg,
 		0,
 		NULL
 	))
 	{
-		printf("Format message failed with 0x%x\n", GetLastError());
+		_tprintf(_T("Format message failed with 0x%x\n"), GetLastError());
 	}
 
-	_tprintf(L"ERROR: %s", errorMsg);
+	_tprintf(_T("ERROR: %s"), errorMsg);
 
 }
 
+void GetSystemMessage(LONG code, TCHAR errMsg[], size_t errMsgSize) {
+	
+	TCHAR buff[ERROR_BUFFER_SIZE];
 
-TCHAR* ErrorMessage(LONG errorCode) 
-{
-    LPTSTR sysMsg = NULL;
-    DWORD len = FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-        NULL,
-        errorCode,
-        0,
-        (LPTSTR)&sysMsg,
-        0,
-        NULL
-    );
+	DWORD len;
 
-    TCHAR* msg = NULL;
+	len = FormatMessage(
+		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		code,
+		0,
+		buff,
+		ERROR_BUFFER_SIZE,
+		NULL
+		);
 
-    if (!sysMsg || len == 0) {
-        msg = (TCHAR*)malloc(64 * sizeof(TCHAR));
-        if (msg) _stprintf_s(msg, 64, _T("Error code 0x%08X"), errorCode);
-    }
-    else {
-        msg = (TCHAR*)malloc((len + 1) * sizeof(TCHAR));
-        if (msg) {
-            _tcsncpy_s(msg, len + 1, sysMsg, len);
-            msg[len] = 0; 
-        }
-        LocalFree(sysMsg);
-    }
-
-    return msg;
+	_stprintf_s(errMsg, errMsgSize, _T("Error value: %ld Message: %s\n"),
+		code,
+		len ? buff : _T("Error message not found."));
 }
