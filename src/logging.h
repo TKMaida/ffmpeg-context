@@ -1,9 +1,7 @@
+#pragma once
+
 #include <windows.h>
 #include <stdio.h>
-
-#ifndef LOGGING_H
-#define LOGGING_H
-
+#define ERROR_BUFFER_SIZE 256
 void PrintErrorMessage(LONG errorCode);
-
-#endif
+void GetSystemMessage(LONG code, TCHAR errMsg[], size_t errMsgSize);
