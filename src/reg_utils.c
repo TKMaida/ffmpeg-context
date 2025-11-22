@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <tchar.h>
-
-#include "op_result.h"
-#include "logging.h"
 #include "reg_utils.h"
+#include <stdio.h>
+#include "logging.h"
+#include <tchar.h>
+#include "op_result.h"
 
 LSTATUS RegKeyExists(HKEY hKeyRoot, LPCTSTR lpSubKey)
 {
@@ -47,62 +46,39 @@ OpResult UpdateRegistry() {
 
     LSTATUS lResult = RegKeyExists(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY);
 
-    if (lResult == ERROR_FILE_NOT_FOUND) 
-    {
-
+    if (lResult == ERROR_FILE_NOT_FOUND) {
         lResult = CreateRegKey(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY);
-
-        if (lResult != ERROR_SUCCESS) 
-        {
-           
-            TCHAR sysMsg[128] = { 0 };
-            GetSystemMessage(lResult, sysMsg, 128);
-
-            TCHAR finalMsg[256] = { 0 };
-            _stprintf_s(finalMsg, 256, _T("%s: Failed to create base key."), sysMsg);
-
+        if (lResult != ERROR_SUCCESS) {
+            /*TCHAR* errMsg = ErrorMessage(lResult);
+            TCHAR* finalMsg = formatString(_T("%s: Failed to create base key."), errMsg);
+            free(errMsg);*/
             return (OpResult) { lResult, finalMsg };
         }
     }
-    else if (lResult != ERROR_SUCCESS) 
-    {
-        TCHAR sysMsg[128] = { 0 };
-        GetSystemMessage(lResult, sysMsg, 128);
-
-        TCHAR finalMsg[256] = { 0 };
-        _stprintf_s(finalMsg, 256, _T("%s: Unhandled exception checking base key."), sysMsg);
-
+    else if (lResult != ERROR_SUCCESS) {
+        /*TCHAR* errMsg = ErrorMessage(lResult);
+        TCHAR* finalMsg = formatString(_T("Unhandled error checking base key: %s"), errMsg);
+        free(errMsg)*/
         return (OpResult) { lResult, finalMsg };
     }
 
     lResult = RegKeyExists(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY_COMMAND);
-
-    if (lResult == ERROR_FILE_NOT_FOUND) 
-    {
+    if (lResult == ERROR_FILE_NOT_FOUND) {
         lResult = CreateRegKey(HKEY_CLASSES_ROOT, PROGRAM_REG_KEY_COMMAND);
-
-        if (lResult != ERROR_SUCCESS) 
-        {
-            TCHAR sysMsg[128] = { 0 };
-            GetSystemMessage(lResult, sysMsg, 128);
-
-            TCHAR finalMsg[256] = { 0 };
-            _stprintf_s(finalMsg, 256, _T("%s: Failed to create command key."), sysMsg);
-
+        if (lResult != ERROR_SUCCESS) {
+            /*TCHAR* errMsg = ErrorMessage(lResult);
+            TCHAR* finalMsg = formatString(_T("%s: Failed to create command key."), errMsg);
+            free(errMsg);*/
             return (OpResult) { lResult, finalMsg };
         }
     }
-    else if (lResult != ERROR_SUCCESS) 
-    {
-        TCHAR sysMsg[128] = { 0 };
-        GetSystemMessage(lResult, sysMsg, 128);
-
-        TCHAR finalMsg[256] = { 0 };
-        _stprintf_s(finalMsg, 256, _T("%s: Unhandled exception checking base key."), sysMsg);
-
+    else if (lResult != ERROR_SUCCESS) {
+        /*TCHAR* errMsg = ErrorMessage(lResult);
+        TCHAR* finalMsg = formatString(_T("%s: Unhandled error checking command key."), errMsg);
+        free(errMsg);*/
         return (OpResult) { lResult, finalMsg };
     }
 
-    TCHAR* successMsg = _T("Registry updated successfully.");
+    TCHAR* successMsg = formatString(_T("Registry updated successfully."));
     return (OpResult) { ERROR_SUCCESS, successMsg };
 }
